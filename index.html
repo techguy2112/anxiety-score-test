@@ -107,6 +107,37 @@
     
     <form id="anxietyTest" onsubmit="calculateScore(event)">
         <div id="questions-container"></div>
+		
+		<!-- Additional Considerations Section -->
+    <div class="question">
+        <label><strong>Additional Considerations</strong></label><br>
+
+        <label class="option-label">
+            <input type="radio" name="additional1" value="5" onchange="updateProgress()">
+            Regular alcohol, drug, or marijuana use – Add 5 points
+        </label>
+
+        <label class="option-label">
+            <input type="radio" name="additional2" value="5" onchange="updateProgress()">
+            Childhood emotional trauma or injuries – Add 5 points
+        </label>
+
+        <label class="option-label">
+            <input type="radio" name="additional3" value="5" onchange="updateProgress()">
+            Family disruption like divorce or deaths – Add 5 points
+        </label>
+
+        <label class="option-label">
+            <input type="radio" name="additional4" value="5" onchange="updateProgress()">
+            Financial setbacks such as bankruptcy – Add 5 points
+        </label>
+
+        <label class="option-label">
+            <input type="radio" name="additional5" value="5" onchange="updateProgress()">
+            Over age fifty-five (55) with fatigue – Add 5 points
+        </label>
+    </div>
+		
         <button type="submit">Submit</button>
     </form>
 
@@ -278,73 +309,91 @@
         });
 
         function calculateScore(event) {
-            event.preventDefault();
+    event.preventDefault();
 
-            let score = 0;
-            let totalQuestions = questions.length;
-            let answered = 0;
+    let score = 0;
+    let totalQuestions = questions.length;
+    let answered = 0;
 
-            questions.forEach((q) => {
-                let selectedOption = document.querySelector(`input[name="q${q.number}"]:checked`);
-                if (selectedOption) {
-                    score += parseInt(selectedOption.value);
-                    answered++;
-                }
-            });
-
-            if (answered < totalQuestions) {
-                alert("Please answer all questions before submitting.");
-                return;
-            }
-
-            let resultText = `Your anxiety score is ${score}.`;
-            let contextText = "";
-
-            if (score >= 20 && score <= 40) {
-                contextText = "Scores in this range suggest that your anxiety, energy issues, and behavioral tendencies are generally mild. You might experience occasional symptoms that are manageable and do not significantly interfere with your daily activities and important goals. This level indicates healthy coping mechanisms and desirable balance in most areas of life.";
-            } else if (score >= 41 && score <= 80) {
-                contextText = "Scores within this range indicate moderate levels of anxiety, energy depletion, or challenging behavioral tendencies. You may find that symptoms regularly impact your life, possibly leading to difficulty managing daily stress, maintaining energy throughout the day, or effectively coping with specific situations. Interventions outlined, including using anxiety tincture/troches will guide you to make the appropriate diet, exercise, and lifestyle changes.";
-            } else if (score >= 81 && score <= 125) {
-                contextText = "Scores in this range suggest severe difficulties related to anxiety, significantly low energy, and problematic behavioral tendencies. Symptoms are likely to be persistent and highly disruptive  to your daily functioning. Along with the strategies in this book, seeking comprehensive medical/psychological professional help is advisable.";
-            } else {
-                contextText = "Invalid score range. Please check your answers.";
-            }
-
-            document.getElementById("result").innerHTML = `<p>${resultText}</p><p>${contextText}</p>`;
-            document.getElementById("result").style.display = "block";
-
-            updateProgress();
+    questions.forEach((q) => {
+        let selectedOption = document.querySelector(`input[name="q${q.number}"]:checked`);
+        if (selectedOption) {
+            score += parseInt(selectedOption.value);
+            answered++;
         }
+    });
+
+    if (answered < totalQuestions) {
+        alert("Please answer all questions before submitting.");
+        return;
+    }
+
+    // Add Additional Considerations
+    const additionalConsiderations = ["additional1", "additional2", "additional3", "additional4", "additional5"];
+    additionalConsiderations.forEach((consideration) => {
+        let selectedOption = document.querySelector(`input[name="${consideration}"]:checked`);
+        if (selectedOption) {
+            score += parseInt(selectedOption.value);
+        }
+    });
+
+    let resultText = `Your anxiety score is ${score}.`;
+    let contextText = "";
+
+    if (score >= 20 && score <= 40) {
+        contextText = "Scores in this range suggest mild anxiety.";
+    } else if (score >= 41 && score <= 80) {
+        contextText = "Moderate levels of anxiety.";
+    } else if (score >= 81 && score <= 125) {
+        contextText = "Severe anxiety detected.";
+    } else {
+        contextText = "Invalid score range. Please check your answers.";
+    }
+
+    document.getElementById("result").innerHTML = `<p>${resultText}</p><p>${contextText}</p>`;
+    document.getElementById("result").style.display = "block";
+
+    updateProgress();
+}
 
         function updateProgress() {
-            let answered = 0;
-            questions.forEach((q) => {
-                if (document.querySelector(`input[name="q${q.number}"]:checked`)) {
-                    answered++;
-                }
-            });
+    let answered = 0;
+    let totalQuestions = questions.length + 5; // Additional 5 questions
 
-            let progress = (answered / questions.length) * 100;
-            document.getElementById("progress-bar").style.width = `${progress}%`;
+    questions.forEach((q) => {
+        if (document.querySelector(`input[name="q${q.number}"]:checked`)) {
+            answered++;
         }
+    });
+
+    const additionalConsiderations = ["additional1", "additional2", "additional3", "additional4", "additional5"];
+    additionalConsiderations.forEach((consideration) => {
+        if (document.querySelector(`input[name="${consideration}"]:checked`)) {
+            answered++;
+        }
+    });
+
+    let progress = (answered / totalQuestions) * 100;
+    document.getElementById("progress-bar").style.width = `${progress}%`;
+}
 
         function sendEmail() {
-            let email = document.getElementById("email").value;
-            let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let email = document.getElementById("email").value;
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-            if (!emailRegex.test(email)) {
-                alert("Please enter a valid email address.");
-                return;
-            }
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+    }
 
-            let scoreText = document.getElementById("result").innerText;
-            if (!scoreText) {
-                alert("Please complete the test before sending results.");
-                return;
-            }
+    let scoreText = document.getElementById("result").innerText;
+    if (!scoreText || scoreText.includes("Invalid score")) {
+        alert("Please complete the test before sending results.");
+        return;
+    }
 
-            alert(`Results sent to ${email} (This is a placeholder. Implement an email service).`);
-        }
+    alert(`Results sent to ${email} (This is a placeholder. Implement an email service).`);
+}
     </script>
 </body>
 </html>
