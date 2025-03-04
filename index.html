@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anxiety Code Score Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .question { margin-bottom: 15px; }
+        .result { font-weight: bold; margin-top: 20px; }
+        #progress-container { width: 100%; background: #ccc; border-radius: 5px; margin: 20px 0; }
+        #progress-bar { height: 20px; width: 0%; background: green; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h2>Anxiety Code Score Test</h2>
+    <p>This questionnaire will help you assess your anxiety level based on various factors such as energy levels, behavioral tendencies, and genetic predispositions.</p>
+    
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+    
+    <form id="anxietyTest">
+        <!-- Questions dynamically inserted here -->
+    </form>
+    
+    <button type="button" onclick="calculateScore()">Submit</button>
+    <div id="result" class="result"></div>
+    <input type="email" id="email" placeholder="Enter your email" required>
+    <button type="button" onclick="sendEmail()">Email Results</button>
+    
+    <script>
+        const questions = [
+            { text: "Nervousness or On Edge:", description: "How often do you feel nervous or on edge?" },
+            { text: "Heart Palpitations:", description: "Do you experience heart palpitations?" },
+            { text: "Intensity of Worry or Panic:", description: "How often do you experience intense worry or panic?" },
+            { text: "Focus and Concentration:", description: "Do you have trouble focusing due to anxiety?" },
+            { text: "Physical Tension:", description: "How often do you feel muscle tension due to anxiety?" },
+            { text: "Decision-Making Anxiety:", description: "How difficult is it for you to make decisions due to anxiety?" },
+            { text: "Anxiety in Public Spaces:", description: "Do you experience anxiety in crowded or public places?" },
+            { text: "Overall Energy Level:", description: "How would you rate your overall daily energy?" },
+            { text: "Morning and Sustained Energy:", description: "Do you wake up feeling refreshed and energized?" },
+            { text: "Insomnia and Sleep Quality:", description: "How well do you sleep at night?" },
+            { text: "Daytime Energy Dips:", description: "Do you experience noticeable dips in energy during the day?" },
+            { text: "Energy After Meals:", description: "Do you feel drained or sluggish after eating meals?" },
+            { text: "Perfectionism:", description: "Do you struggle with perfectionism, causing stress?" },
+            { text: "Repetitive Behaviors:", description: "Do you engage in repetitive behaviors due to anxiety?" },
+            { text: "Hoarding:", description: "Do you have trouble discarding items, leading to clutter?" },
+            { text: "Avoidance of New or Challenging Situations:", description: "Do you avoid new or challenging situations due to anxiety?" },
+            { text: "Feelings of Dread or Fear of the Future:", description: "Do you frequently worry about the future?" },
+            { text: "Social Withdrawal:", description: "Do you tend to withdraw from social interactions due to anxiety?" },
+            { text: "Family History of Anxiety, Depression, or Mental Health Disorders:", description: "Do you have a family history of mental health conditions?" },
+            { text: "Substance Misuse or Addiction in Family:", description: "Does your family have a history of substance misuse or addiction?" }
+        ];
+
+        const form = document.getElementById("anxietyTest");
+        questions.forEach((q, index) => {
+            let div = document.createElement("div");
+            div.classList.add("question");
+            div.innerHTML = `<label>${index + 1}. ${q.text}</label><br><small>${q.description}</small><br>
+                <input type="radio" name="q${index + 1}" value="1"> 1
+                <input type="radio" name="q${index + 1}" value="2"> 2
+                <input type="radio" name="q${index + 1}" value="3"> 3
+                <input type="radio" name="q${index + 1}" value="4"> 4
+                <input type="radio" name="q${index + 1}" value="5"> 5`;
+            form.appendChild(div);
+        });
+
+        function calculateScore() {
+            let totalScore = 0;
+            let questionsAnswered = 0;
+            let questions = document.querySelectorAll('input[type="radio"]:checked');
+            questions.forEach(q => { 
+                totalScore += parseInt(q.value);
+                questionsAnswered++;
+            });
+            
+            let resultText = "Your Total Anxiety Score: " + totalScore + "<br>";
+            if (totalScore >= 20 && totalScore <= 40) {
+                resultText += "Mild Anxiety";
+            } else if (totalScore >= 41 && totalScore <= 80) {
+                resultText += "Moderate Anxiety";
+            } else if (totalScore >= 81) {
+                resultText += "Severe Anxiety";
+            }
+            
+            document.getElementById("result").innerHTML = resultText;
+        }
+
+        function updateProgress() {
+            let answered = document.querySelectorAll('input[type="radio"]:checked').length;
+            let progress = (answered / questions.length) * 100;
+            document.getElementById("progress-bar").style.width = progress + "%";
+        }
+
+        document.addEventListener("change", updateProgress);
+
+        function sendEmail() {
+            let email = document.getElementById("email").value;
+            let result = document.getElementById("result").innerText;
+            if (!email) {
+                alert("Please enter an email address.");
+                return;
+            }
+            
+            let mailtoLink = "mailto:" + email + "?subject=Your Anxiety Score&body=" + encodeURIComponent(result);
+            window.location.href = mailtoLink;
+        }
+    </script>
+</body>
+</html>
