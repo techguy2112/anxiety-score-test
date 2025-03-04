@@ -12,6 +12,7 @@
             color: #333;
             max-width: 800px;
             margin: auto;
+            padding-top: 30px; /* Prevent content from being hidden under the fixed progress bar */
         }
         h2 {
             text-align: center;
@@ -38,20 +39,26 @@
             border-left: 5px solid #28a745;
             display: none;
         }
+        
+        /* Updated Progress Bar Section */
         #progress-container {
-            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw; /* Full viewport width */
             background: #ddd;
-            border-radius: 5px;
-            margin: 20px 0;
+            border-radius: 0; /* Remove rounding to match the viewport */
             height: 15px;
-            overflow: hidden;
+            z-index: 1000; /* Ensures it stays on top */
         }
+        
         #progress-bar {
             height: 100%;
             width: 0%;
             background: #28a745;
             transition: width 0.3s;
         }
+        
         button {
             display: block;
             width: 100%;
