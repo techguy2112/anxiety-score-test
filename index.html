@@ -298,7 +298,19 @@
             }
 
             let resultText = `Your anxiety score is ${score}.`;
-            document.getElementById("result").innerText = resultText;
+            let contextText = "";
+
+            if (score >= 20 && score <= 40) {
+                contextText = "This falls in the Mild range. Your anxiety, energy issues, and behavioral tendencies are generally mild. You might experience occasional symptoms that are manageable and do not significantly interfere with your daily activities.";
+            } else if (score >= 41 && score <= 80) {
+                contextText = "This falls in the Moderate range. You may experience regular anxiety symptoms that impact your life, making stress management and maintaining daily energy levels challenging. Consider lifestyle changes and strategies to improve well-being.";
+            } else if (score >= 81 && score <= 125) {
+                contextText = "This falls in the Severe range. Your anxiety symptoms may be persistent and highly disruptive to daily functioning. Seeking professional guidance or medical support is advisable to manage your anxiety effectively.";
+            } else {
+                contextText = "Invalid score range. Please check your answers.";
+            }
+
+            document.getElementById("result").innerHTML = `<p>${resultText}</p><p>${contextText}</p>`;
             document.getElementById("result").style.display = "block";
 
             updateProgress();
