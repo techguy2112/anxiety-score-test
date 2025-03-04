@@ -5,106 +5,326 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Anxiety Code Score Test</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        .question { margin-bottom: 15px; }
-        .result { font-weight: bold; margin-top: 20px; }
-        #progress-container { width: 100%; background: #ccc; border-radius: 5px; margin: 20px 0; }
-        #progress-bar { height: 20px; width: 0%; background: green; border-radius: 5px; }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            background-color: #f8f9fa;
+            color: #333;
+            max-width: 800px;
+            margin: auto;
+        }
+        h2 {
+            text-align: center;
+            color: #0056b3;
+        }
+        p {
+            text-align: center;
+            font-size: 1.1em;
+        }
+        .question {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .result {
+            font-weight: bold;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+            padding: 10px;
+            background: #d4edda;
+            border-left: 5px solid #28a745;
+            display: none;
+        }
+        #progress-container {
+            width: 100%;
+            background: #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+            height: 15px;
+            overflow: hidden;
+        }
+        #progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #28a745;
+            transition: width 0.3s;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            font-size: 1.2em;
+            color: white;
+            background: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            margin-top: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .option-label {
+            display: block;
+            padding: 5px;
+            cursor: pointer;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
     <h2>Anxiety Code Score Test</h2>
-    <p>This questionnaire will help you assess your anxiety level based on various factors such as energy levels, behavioral tendencies, and genetic predispositions.</p>
+    <p>Answer each question to determine your anxiety level.</p>
     
     <div id="progress-container">
         <div id="progress-bar"></div>
     </div>
     
-    <form id="anxietyTest">
-        <!-- Questions dynamically inserted here -->
+    <form id="anxietyTest" onsubmit="calculateScore(event)">
+        <div id="questions-container"></div>
+        <button type="submit">Submit</button>
     </form>
-    
-    <button type="button" onclick="calculateScore()">Submit</button>
+
     <div id="result" class="result"></div>
-    <input type="email" id="email" placeholder="Enter your email" required>
+
+    <input type="email" id="email" placeholder="Enter your email to receive results">
     <button type="button" onclick="sendEmail()">Email Results</button>
-    
+
     <script>
         const questions = [
-            { text: "Nervousness or On Edge:", description: "How often do you feel nervous or on edge?" },
-            { text: "Heart Palpitations:", description: "Do you experience heart palpitations?" },
-            { text: "Intensity of Worry or Panic:", description: "How often do you experience intense worry or panic?" },
-            { text: "Focus and Concentration:", description: "Do you have trouble focusing due to anxiety?" },
-            { text: "Physical Tension:", description: "How often do you feel muscle tension due to anxiety?" },
-            { text: "Decision-Making Anxiety:", description: "How difficult is it for you to make decisions due to anxiety?" },
-            { text: "Anxiety in Public Spaces:", description: "Do you experience anxiety in crowded or public places?" },
-            { text: "Overall Energy Level:", description: "How would you rate your overall daily energy?" },
-            { text: "Morning and Sustained Energy:", description: "Do you wake up feeling refreshed and energized?" },
-            { text: "Insomnia and Sleep Quality:", description: "How well do you sleep at night?" },
-            { text: "Daytime Energy Dips:", description: "Do you experience noticeable dips in energy during the day?" },
-            { text: "Energy After Meals:", description: "Do you feel drained or sluggish after eating meals?" },
-            { text: "Perfectionism:", description: "Do you struggle with perfectionism, causing stress?" },
-            { text: "Repetitive Behaviors:", description: "Do you engage in repetitive behaviors due to anxiety?" },
-            { text: "Hoarding:", description: "Do you have trouble discarding items, leading to clutter?" },
-            { text: "Avoidance of New or Challenging Situations:", description: "Do you avoid new or challenging situations due to anxiety?" },
-            { text: "Feelings of Dread or Fear of the Future:", description: "Do you frequently worry about the future?" },
-            { text: "Social Withdrawal:", description: "Do you tend to withdraw from social interactions due to anxiety?" },
-            { text: "Family History of Anxiety, Depression, or Mental Health Disorders:", description: "Do you have a family history of mental health conditions?" },
-            { text: "Substance Misuse or Addiction in Family:", description: "Does your family have a history of substance misuse or addiction?" }
-        ];
+    { number: 1, text: "Nervousness or On Edge:", options: [
+        "1 = Rarely or never feel nervous; almost always calm. Able to focus on tasks at hand.",
+        "2 = Sometimes feel slightly nervous; easy to manage.",
+        "3 = Feels nervous, manageable without much trouble.",
+        "4 = Frequently nervous all day, often interfering with daily activities. Cannot focus.",
+        "5 = Constantly feeling nervous, panicky, seriously impacting daily life. Difficult to function."
+    ]},
+    { number: 2, text: "Heart Palpitations:", options: [
+        "1 = Never experience palpitations.",
+        "2 = Rare palpitations, not bothersome.",
+        "3 = Experience mild palpitations during stress.",
+        "4 = Frequent palpitations, occasionally disturbing.",
+        "5 = Regular and intense palpitations affecting daily activities."
+    ]},
+    { number: 3, text: "Intensity of Worry or Panic:", options: [
+        "1 = Rarely has feelings of worry, feels secure and at peace.",
+        "2 = Occasionally worry, but rarely panic.",
+        "3 = Moderate worry tied to specific stressful events.",
+        "4 = Persistent, overwhelming worry that is hard to control.",
+        "5 = Overwhelming worry that leads to panic attacks."
+    ]},
+    { number: 4, text: "Focus and Concentration:", options: [
+        "1 = Always focused, never distracted by anxiety.",
+        "2 = Minor focus issues; usually can regain concentration quickly.",
+        "3 = Off and on; have trouble concentrating when anxious.",
+        "4 = Frequent focus or concentration issues, affecting job or school performance. Sensory overload.",
+        "5 = Chronic concentration issues and obsessive thoughts, which severely affect productivity."
+    ]},
+    { number: 5, text: "Physical Tension:", options: [
+        "1 = Muscles are relaxed, with no tension.",
+        "2 = Infrequent muscle tension, easily relieved.",
+        "3 = Migratory muscle tension after prolonged stress.",
+        "4 = Regular muscle tension, often requiring relaxation techniques.",
+        "5 = Chronic muscle tension, requiring medical or therapeutic intervention."
+    ]},
+    { number: 6, text: "Decision-Making Anxiety:", options: [
+        "1 = Make decisions easily without distress.",
+        "2 = Occasionally hesitate, but can decide without much trouble.",
+        "3 = Experience some anxiety with major decisions, but it’s generally manageable.",
+        "4 = Frequently anxious about decisions, delaying or avoiding them.",
+        "5 = Decision-making often causes significant anxiety, impacting daily choices."
+    ]},
+    { number: 7, text: "Anxiety in Public Spaces:", options: [
+        "1 = Feel comfortable and calm in public spaces.",
+        "2 = Slight discomfort in crowded or noisy spaces, but manageable.",
+        "3 = Occasionally anxious in crowded, noisy, or public spaces.",
+        "4 = Regular anxiety in public, limiting exposure to such environments.",
+        "5 = Regularly feel significant anxiety in public spaces, avoiding them when possible."
+    ]},
+    { number: 8, text: "Overall Energy Level:", options: [
+        "1 = Full of energy, easily sustaining activities all day.",
+        "2 = Generally good energy, slight afternoon dip.",
+        "3 = Generally good to adequate energy but sometimes feel tired mid-day.",
+        "4 = Often low energy, struggling to stay alert. Yawning.",
+        "5 = Constant fatigue, making even minimal activity difficult. Tired in the morning."
+    ]},
+    { number: 9, text: "Morning and Sustained Energy:", options: [
+        "1 = Wake up energized and ready to start the day.",
+        "2 = Wake up adequately energized with occasional sluggish mornings.",
+        "3 = Sometimes hard to get going but manageable.",
+        "4 = Regularly difficult to start the day, frequent morning fatigue.",
+        "5 = Extremely difficult to get out of bed, feeling exhausted and not refreshed."
+    ]},
+    { number: 10, text: "Insomnia and Sleep Quality:", options: [
+        "1 = Excellent, restorative sleep every night.",
+        "2 = Generally good sleep with rare disturbances.",
+        "3 = Occasionally restless nights but generally good sleep.",
+        "4 = Frequent restless nights, often feeling tired the next day.",
+        "5 = Chronic insomnia, rarely feel rested."
+    ]},
+    { number: 11, text: "Daytime Energy Dips:", options: [
+        "1 = Maintain steady energy throughout the day.",
+        "2 = Minor energy dips, quickly recoverable.",
+        "3 = Noticeable dip after meals or during the late afternoon.",
+        "4 = Frequent energy lows that affect functioning.",
+        "5 = Need to nap frequently, unable to maintain energy."
+    ]},
+    { number: 12, text: "Energy After Meals:", options: [
+        "1 = Feel energized after eating; food serves as a boost.",
+        "2 = Slight lethargy after heavy meals but recovers quickly.",
+        "3 = Occasionally sluggish after meals.",
+        "4 = Often feels drained after meals, needing time to recover.",
+        "5 = Regularly feel drained and need rest after eating."
+    ]},
+    { number: 13, text: "Perfectionism:", options: [
+        "1 = Comfortable and confident about my work; rarely focus on flaws.",
+        "2 = Mild concern for details; desire for better results.",
+        "3 = Often concerned with details, occasionally redoing tasks to improve them.",
+        "4 = Frequently striving for perfection, causing delays and stress.",
+        "5 = Constant striving for perfection, often unable to complete projects."
+    ]},
+    { number: 14, text: "Repetitive Behaviors:", options: [
+        "1 = No repetitive behaviors.",
+        "2 = Infrequent repetitive behaviors, not disruptive.",
+        "3 = Mild repetitive behaviors like checking locks or appliances occasionally.",
+        "4 = Frequent repetitive actions, becoming a concern.",
+        "5 = Compulsive, repetitive behaviors significantly impacting daily life."
+    ]},
+    { number: 15, text: "Hoarding:", options: [
+        "1 = No difficulty discarding items; keeps necessary or meaningful items.",
+        "2 = Minor hesitation to discard items, but can let go.",
+        "3 = Generally maintains a functional living space, with some areas of clutter.",
+        "4 = Frequently hoards specific items such as paperwork, clothing, or broken items.",
+        "5 = Persistent difficulty discarding items, leading to cluttered living areas that impair function. Is very difficult to decide what to throw away."
+    ]},
+    { number: 16, text: "Avoidance of New or Challenging Situations:", options: [
+        "1 = Confidently engage in various situations without fear.",
+        "2 = Slight hesitation before new challenges; generally overcome.",
+        "3 = Sometimes avoid new or challenging situations but can manage some.",
+        "4 = Often avoids challenging situations, impacting personal growth.",
+        "5 = Regularly avoid new or challenging situations due to anxiety, impacting social and professional life."
+    ]},
+    { number: 17, text: "Feelings of Dread or Fear of the Future:", options: [
+        "1 = Feel optimistic about the future.",
+        "2 = Occasionally uncertain but generally positive.",
+        "3 = Occasionally experience fear of future events but can shake it off.",
+        "4 = Regularly fearful about the future, feeling pessimistic.",
+        "5 = Persistent dread about the future, feeling bleak and hopeless."
+    ]},
+    { number: 18, text: "Social Withdrawal:", options: [
+        "1 = Actively engage in social activities with ease.",
+        "2 = Slightly uncomfortable in social settings, but still participate.",
+        "3 = Sometimes prefer solitude, but social interaction is generally manageable.",
+        "4 = Often avoids social interactions, feeling stressed.",
+        "5 = Frequently withdraw from social situations due to anxiety."
+    ]},
+    { number: 19, text: "Family History of Anxiety, Depression, or Mental Health Disorders:", options: [
+        "1 = No known family history.",
+        "2 = Rare cases of anxiety or depression in distant relatives.",
+        "3 = Some relatives with anxiety or mental health disorders, but not immediate family.",
+        "4 = Several family members, including close relatives, with anxiety, depression, or mental health issues.",
+        "5 = Immediate family members diagnosed with anxiety, addiction, or mental health disorders."
+    ]},
+    { number: 20, text: "Substance Misuse or Addiction in Family:", options: [
+        "1 = No history of substance misuse in the family.",
+        "2 = Rare, isolated cases of substance misuse.",
+        "3 = Uncertain or isolated cases of substance misuse related to stress.",
+        "4 = Several instances of substance misuse and addiction among family members.",
+        "5 = Clear pattern of substance misuse and addiction in the family."
+    ]}
+];
 
-        const form = document.getElementById("anxietyTest");
-        questions.forEach((q, index) => {
+
+        const formContainer = document.getElementById("questions-container");
+
+        questions.forEach((q) => {
             let div = document.createElement("div");
             div.classList.add("question");
-            div.innerHTML = `<label>${index + 1}. ${q.text}</label><br><small>${q.description}</small><br>
-                <input type="radio" name="q${index + 1}" value="1"> 1
-                <input type="radio" name="q${index + 1}" value="2"> 2
-                <input type="radio" name="q${index + 1}" value="3"> 3
-                <input type="radio" name="q${index + 1}" value="4"> 4
-                <input type="radio" name="q${index + 1}" value="5"> 5`;
-            form.appendChild(div);
+
+            let optionsHTML = q.options.map((option, optIndex) => `
+                <label class="option-label">
+                    <input type="radio" name="q${q.number}" value="${optIndex + 1}" onchange="updateProgress()">
+                    ${option}
+                </label>
+            `).join("");
+
+            div.innerHTML = `<label>${q.number}. ${q.text}</label><br>${optionsHTML}`;
+            formContainer.appendChild(div);
         });
 
-        function calculateScore() {
-            let totalScore = 0;
-            let questionsAnswered = 0;
-            let questions = document.querySelectorAll('input[type="radio"]:checked');
-            questions.forEach(q => { 
-                totalScore += parseInt(q.value);
-                questionsAnswered++;
+        function calculateScore(event) {
+            event.preventDefault();
+
+            let score = 0;
+            let totalQuestions = questions.length;
+            let answered = 0;
+
+            questions.forEach((q) => {
+                let selectedOption = document.querySelector(`input[name="q${q.number}"]:checked`);
+                if (selectedOption) {
+                    score += parseInt(selectedOption.value);
+                    answered++;
+                }
             });
-            
-            let resultText = "Your Total Anxiety Score: " + totalScore + "<br>";
-            if (totalScore >= 20 && totalScore <= 40) {
-                resultText += "Mild Anxiety";
-            } else if (totalScore >= 41 && totalScore <= 80) {
-                resultText += "Moderate Anxiety";
-            } else if (totalScore >= 81) {
-                resultText += "Severe Anxiety";
+
+            if (answered < totalQuestions) {
+                alert("Please answer all questions before submitting.");
+                return;
             }
-            
-            document.getElementById("result").innerHTML = resultText;
+
+            let resultText = `Your anxiety score is ${score}.`;
+            document.getElementById("result").innerText = resultText;
+            document.getElementById("result").style.display = "block";
+
+            updateProgress();
         }
 
         function updateProgress() {
-            let answered = document.querySelectorAll('input[type="radio"]:checked').length;
-            let progress = (answered / questions.length) * 100;
-            document.getElementById("progress-bar").style.width = progress + "%";
-        }
+            let answered = 0;
+            questions.forEach((q) => {
+                if (document.querySelector(`input[name="q${q.number}"]:checked`)) {
+                    answered++;
+                }
+            });
 
-        document.addEventListener("change", updateProgress);
+            let progress = (answered / questions.length) * 100;
+            document.getElementById("progress-bar").style.width = `${progress}%`;
+        }
 
         function sendEmail() {
             let email = document.getElementById("email").value;
-            let result = document.getElementById("result").innerText;
-            if (!email) {
-                alert("Please enter an email address.");
+            let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address.");
                 return;
             }
-            
-            let mailtoLink = "mailto:" + email + "?subject=Your Anxiety Score&body=" + encodeURIComponent(result);
-            window.location.href = mailtoLink;
+
+            let scoreText = document.getElementById("result").innerText;
+            if (!scoreText) {
+                alert("Please complete the test before sending results.");
+                return;
+            }
+
+            alert(`Results sent to ${email} (This is a placeholder. Implement an email service).`);
         }
     </script>
 </body>
