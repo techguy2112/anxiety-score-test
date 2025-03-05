@@ -360,12 +360,19 @@
     let score = 0;
     let totalQuestions = questions.length;
     let answered = 0;
+    let unansweredQuestions = [];
+
+    // Reset previous highlights
+    document.querySelectorAll('.question').forEach(q => q.style.border = "none");
 
     questions.forEach((q) => {
         let selectedOption = document.querySelector(`input[name="q${q.number}"]:checked`);
         if (selectedOption) {
             score += parseInt(selectedOption.value);
             answered++;
+        } else {
+            unansweredQuestions.push(q.number);
+            document.querySelector(`input[name="q${q.number}"]`).closest('.question').style.border = "2px solid red";
         }
     });
 
@@ -396,7 +403,7 @@
         resultBox.style.backgroundColor = "#fff3cd"; // Yellow background
         resultBox.style.borderLeft = "5px solid #ffc107"; // Yellow border
     } else if (score >= 81 && score <= 126) {
-        contextText = "Scores in this range suggest severe difficulties related to anxiety, significantly low energy, and problematic behavioral tendencies. Symptoms are likely to be persistent and highly disruptive  to your daily functioning. Along with the strategies in this book, seeking comprehensive medical/psychological professional help is advisable.";
+        contextText = "Scores in this range suggest severe difficulties related to anxiety, significantly low energy, and problematic behavioral tendencies. Symptoms are likely to be persistent and highly disruptive to your daily functioning. Along with the strategies in this book, seeking comprehensive medical/psychological professional help is advisable.";
         resultBox.style.backgroundColor = "#f8d7da"; // Red background
         resultBox.style.borderLeft = "5px solid #dc3545"; // Red border
     } else {
@@ -410,6 +417,7 @@
 
     updateProgress();
 }
+
 
 
         function updateProgress() {
