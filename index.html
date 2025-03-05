@@ -385,22 +385,32 @@
 
     let resultText = `Your anxiety score is ${score}.`;
     let contextText = "";
+    let resultBox = document.getElementById("result");
 
     if (score >= 20 && score <= 40) {
-        contextText = "Scores in this range suggest that your anxiety, energy issues, and behavioral tendencies are generally mild. You might experience occasional symptoms that are manageable and do not significantly interfere with your daily activities and important goals. This level indicates healthy coping mechanisms and desirable balance in most areas of life.";
+        contextText = "Scores in this range suggest that your anxiety, energy issues, and behavioral tendencies are generally mild.";
+        resultBox.style.backgroundColor = "#d4edda"; // Green background
+        resultBox.style.borderLeft = "5px solid #28a745"; // Green border
     } else if (score >= 41 && score <= 80) {
-        contextText = "Scores within this range indicate moderate levels of anxiety, energy depletion, or challenging behavioral tendencies. You may find that symptoms regularly impact your life, possibly leading to difficulty managing daily stress, maintaining energy throughout the day, or effectively coping with specific situations. Interventions outlined, including using anxiety tincture/troches will guide you to make the appropriate diet, exercise, and lifestyle changes.";
-    } else if (score >= 81 && score <= 125) {
-        contextText = "Scores in this range suggest severe difficulties related to anxiety, significantly low energy, and problematic behavioral tendencies. Symptoms are likely to be persistent and highly disruptive  to your daily functioning. Along with the strategies in this book, seeking comprehensive medical/psychological professional help is advisable.";
+        contextText = "Scores within this range indicate moderate levels of anxiety, energy depletion, or challenging behavioral tendencies.";
+        resultBox.style.backgroundColor = "#fff3cd"; // Yellow background
+        resultBox.style.borderLeft = "5px solid #ffc107"; // Yellow border
+    } else if (score >= 81 && score <= 126) {
+        contextText = "Scores in this range suggest severe difficulties related to anxiety, significantly low energy, and problematic behavioral tendencies.";
+        resultBox.style.backgroundColor = "#f8d7da"; // Red background
+        resultBox.style.borderLeft = "5px solid #dc3545"; // Red border
     } else {
         contextText = "Invalid score range. Please check your answers.";
+        resultBox.style.backgroundColor = "#e2e3e5"; // Gray background for error
+        resultBox.style.borderLeft = "5px solid #6c757d"; // Gray border
     }
 
-    document.getElementById("result").innerHTML = `<p>${resultText}</p><p>${contextText}</p>`;
-    document.getElementById("result").style.display = "block";
+    resultBox.innerHTML = `<p>${resultText}</p><p>${contextText}</p>`;
+    resultBox.style.display = "block";
 
     updateProgress();
 }
+
 
         function updateProgress() {
     let answered = 0;
