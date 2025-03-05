@@ -109,34 +109,41 @@
         <div id="questions-container"></div>
 		
 		<!-- Additional Considerations Section -->
-    <div class="question">
-        <label><strong>Additional Considerations</strong></label><br>
+    <!-- Additional Considerations Section -->
+<div class="question">
+    <label><strong>Additional Considerations</strong></label><br>
 
-        <label class="option-label">
-            <input type="radio" name="additional1" value="5" onchange="updateProgress()">
-            Regular alcohol, drug, or marijuana use – Add 5 points
-        </label>
+    <label class="option-label">
+        Regular alcohol, drug, or marijuana use:
+        <input type="radio" name="additional1" value="5" onchange="updateProgress()"> Yes (Add 5 points)
+        <input type="radio" name="additional1" value="0" onchange="updateProgress()"> No
+    </label>
 
-        <label class="option-label">
-            <input type="radio" name="additional2" value="5" onchange="updateProgress()">
-            Childhood emotional trauma or injuries – Add 5 points
-        </label>
+    <label class="option-label">
+        Childhood emotional trauma or injuries:
+        <input type="radio" name="additional2" value="5" onchange="updateProgress()"> Yes (Add 5 points)
+        <input type="radio" name="additional2" value="0" onchange="updateProgress()"> No
+    </label>
 
-        <label class="option-label">
-            <input type="radio" name="additional3" value="5" onchange="updateProgress()">
-            Family disruption like divorce or deaths – Add 5 points
-        </label>
+    <label class="option-label">
+        Family disruption like divorce or deaths:
+        <input type="radio" name="additional3" value="5" onchange="updateProgress()"> Yes (Add 5 points)
+        <input type="radio" name="additional3" value="0" onchange="updateProgress()"> No
+    </label>
 
-        <label class="option-label">
-            <input type="radio" name="additional4" value="5" onchange="updateProgress()">
-            Financial setbacks such as bankruptcy – Add 5 points
-        </label>
+    <label class="option-label">
+        Financial setbacks such as bankruptcy:
+        <input type="radio" name="additional4" value="5" onchange="updateProgress()"> Yes (Add 5 points)
+        <input type="radio" name="additional4" value="0" onchange="updateProgress()"> No
+    </label>
 
-        <label class="option-label">
-            <input type="radio" name="additional5" value="5" onchange="updateProgress()">
-            Over age fifty-five (55) with fatigue – Add 5 points
-        </label>
-    </div>
+    <label class="option-label">
+        Over age fifty-five (55) with fatigue:
+        <input type="radio" name="additional5" value="5" onchange="updateProgress()"> Yes (Add 5 points)
+        <input type="radio" name="additional5" value="0" onchange="updateProgress()"> No
+    </label>
+</div>
+
 		
         <button type="submit">Submit</button>
     </form>
