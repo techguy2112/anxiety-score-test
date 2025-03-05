@@ -29,6 +29,23 @@
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+		.option-label {
+        display: block;
+        padding: 5px;
+        cursor: pointer;
+		}
+
+    /* New Styles for Proper Alignment */
+    .option-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 10px;
+		}
+
+    .option-group span {
+        font-weight: bold;
+        margin-bottom: 5px;
+		}
         .result {
             font-weight: bold;
             margin-top: 20px;
@@ -38,7 +55,7 @@
             background: #d4edda;
             border-left: 5px solid #28a745;
             display: none;
-        }
+		}
         
         /* Updated Progress Bar Section */
         #progress-container {
@@ -111,49 +128,61 @@
 		<!-- Additional Considerations Section -->
     <!-- Additional Considerations Section -->
 <!-- Additional Considerations Section -->
+<!-- Additional Considerations Section -->
 <div class="question">
     <label><strong>Additional Considerations</strong></label><br>
 
-    <p>Regular alcohol, drug, or marijuana use:</p>
-    <label class="option-label">
-        <input type="radio" name="additional1" value="5" onchange="updateProgress()"> Yes (Add 5 points)
-    </label>
-    <label class="option-label">
-        <input type="radio" name="additional1" value="0" onchange="updateProgress()"> No
-    </label>
+    <div class="option-group">
+        <span>Regular alcohol, drug, or marijuana use:</span>
+        <label class="option-label">
+            <input type="radio" name="additional1" value="5" onchange="updateProgress()"> Yes (Add 5 points)
+        </label>
+        <label class="option-label">
+            <input type="radio" name="additional1" value="0" onchange="updateProgress()"> No
+        </label>
+    </div>
 
-    <p>Childhood emotional trauma or injuries:</p>
-    <label class="option-label">
-        <input type="radio" name="additional2" value="5" onchange="updateProgress()"> Yes (Add 5 points)
-    </label>
-    <label class="option-label">
-        <input type="radio" name="additional2" value="0" onchange="updateProgress()"> No
-    </label>
+    <div class="option-group">
+        <span>Childhood emotional trauma or injuries:</span>
+        <label class="option-label">
+            <input type="radio" name="additional2" value="5" onchange="updateProgress()"> Yes (Add 5 points)
+        </label>
+        <label class="option-label">
+            <input type="radio" name="additional2" value="0" onchange="updateProgress()"> No
+        </label>
+    </div>
 
-    <p>Family disruption like divorce or deaths:</p>
-    <label class="option-label">
-        <input type="radio" name="additional3" value="5" onchange="updateProgress()"> Yes (Add 5 points)
-    </label>
-    <label class="option-label">
-        <input type="radio" name="additional3" value="0" onchange="updateProgress()"> No
-    </label>
+    <div class="option-group">
+        <span>Family disruption like divorce or deaths:</span>
+        <label class="option-label">
+            <input type="radio" name="additional3" value="5" onchange="updateProgress()"> Yes (Add 5 points)
+        </label>
+        <label class="option-label">
+            <input type="radio" name="additional3" value="0" onchange="updateProgress()"> No
+        </label>
+    </div>
 
-    <p>Financial setbacks such as bankruptcy:</p>
-    <label class="option-label">
-        <input type="radio" name="additional4" value="5" onchange="updateProgress()"> Yes (Add 5 points)
-    </label>
-    <label class="option-label">
-        <input type="radio" name="additional4" value="0" onchange="updateProgress()"> No
-    </label>
+    <div class="option-group">
+        <span>Financial setbacks such as bankruptcy:</span>
+        <label class="option-label">
+            <input type="radio" name="additional4" value="5" onchange="updateProgress()"> Yes (Add 5 points)
+        </label>
+        <label class="option-label">
+            <input type="radio" name="additional4" value="0" onchange="updateProgress()"> No
+        </label>
+    </div>
 
-    <p>Over age fifty-five (55) with fatigue:</p>
-    <label class="option-label">
-        <input type="radio" name="additional5" value="5" onchange="updateProgress()"> Yes (Add 5 points)
-    </label>
-    <label class="option-label">
-        <input type="radio" name="additional5" value="0" onchange="updateProgress()"> No
-    </label>
+    <div class="option-group">
+        <span>Over age fifty-five (55) with fatigue:</span>
+        <label class="option-label">
+            <input type="radio" name="additional5" value="5" onchange="updateProgress()"> Yes (Add 5 points)
+        </label>
+        <label class="option-label">
+            <input type="radio" name="additional5" value="0" onchange="updateProgress()"> No
+        </label>
+    </div>
 </div>
+
 		
         <button type="submit">Submit</button>
     </form>
